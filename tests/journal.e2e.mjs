@@ -1,0 +1,55 @@
+import { launch, APP, finish } from './_env.mjs';
+const OUT = '/tmp/jr'; import fs from 'fs'; fs.rmSync(OUT, { recursive: true, force: true }); fs.mkdirSync(OUT);
+const b = await launch();
+const p = await b.newPage({ viewport: { width: 1680, height: 940 } });
+const errs = []; p.on('pageerror', (e) => errs.push(e.message)); p.on('console', (m) => m.type() === 'error' && errs.push(m.text()));
+await p.goto(APP + '#bada'); await p.waitForTimeout(600);
+const D = p.locator('.dash'); const M = p.locator('.phone .mapp');
+let n = 0; const shot = async (name) => { await p.waitForTimeout(500); await p.screenshot({ path: `${OUT}/${String(++n).padStart(2, '0')}-${name}.png` }); };
+const step = async (label, fn) => { try { await fn(); } catch (e) { errs.push(`STEP ${label}: ${e.message.split('\n')[0]}`); await shot('FAIL-' + label); } };
+
+await step('bosse-in-visit', async () => {
+  for (const x of ['Starta navigering', 'Jag är framme', 'Starta besök']) await M.getByRole('button', { name: x }).first().click();
+  await shot('invisit-journal-card');
+  await M.getByRole('button', { name: /Diktera journal/ }).click(); await shot('intro');
+  await M.getByRole('button', { name: 'Börja diktera' }).click(); await p.waitForTimeout(2200); await shot('recording');
+  await M.getByRole('button', { name: 'Klar' }).click(); await p.waitForTimeout(300); await shot('processing');
+  await p.waitForTimeout(1500); await shot('draft');
+  const sign = M.getByRole('button', { name: /Åtgärda 1 markering/ });
+  if (!(await sign.isDisabled())) errs.push('sign should be disabled with open flag');
+  await M.getByRole('button', { name: 'Lägg till', exact: true }).click(); await shot('flag-fixed');
+  await M.getByRole('button', { name: 'Signera journal' }).click(); await shot('sign-sheet');
+  await M.locator('.sheet').getByRole('button', { name: 'Signera' }).click(); await shot('signed-syncing');
+  await p.waitForTimeout(1800); await shot('synced');
+  await M.getByRole('button', { name: 'Tillbaka' }).last().click(); await shot('back-invisit');
+  await M.locator('.mcta').getByRole('button', { name: 'Avsluta besök' }).click();
+  await M.locator('.sheet').getByRole('button', { name: 'Avsluta besök' }).click(); await p.waitForTimeout(2600);
+});
+await step('coord-bosse', async () => {
+  await D.locator('[data-vetrow="anna"] .bhead').click();
+  await D.locator('.stop', { hasText: 'Bosse' }).click(); await p.waitForTimeout(400);
+  await D.locator('.dr-scroll').evaluate((el) => el.scrollTo(0, 9999)); await shot('coord-drawer-bosse');
+  await D.locator('.drawer .panel-head .iconbtn').click(); await p.keyboard.press('Escape');
+});
+await step('luna-no-journal', async () => {
+  const nxt = M.getByRole('button', { name: 'Nästa besök', exact: true }); if (await nxt.count()) await nxt.click();
+  for (const x of ['Starta navigering', 'Jag är framme', 'Starta besök']) await M.getByRole('button', { name: x }).first().click();
+  await M.locator('.mcta').getByRole('button', { name: 'Avsluta besök' }).click();
+  await M.locator('.sheet').getByRole('button', { name: 'Avsluta besök' }).click(); await p.waitForTimeout(2600);
+  await shot('banner-and-alert');
+  await M.locator('[data-demo="m-journal"]').click();
+  await M.getByRole('button', { name: 'Börja diktera' }).click(); await p.waitForTimeout(800);
+  await M.getByRole('button', { name: 'Klar' }).click(); await p.waitForTimeout(1800); await shot('luna-draft');
+  await M.getByRole('button', { name: 'Bekräfta 10 mg/ml' }).click();
+  await M.getByRole('button', { name: 'Signera journal' }).click();
+  await M.locator('.sheet').getByRole('button', { name: 'Signera' }).click(); await p.waitForTimeout(1900);
+  await M.getByRole('button', { name: 'Tillbaka' }).last().click(); await shot('after-luna');
+  await D.locator('.rail-btn', { hasText: 'Besök' }).click(); await shot('list-journal-col');
+  await D.locator('.rail-btn', { hasText: 'Rapport' }).click(); await shot('report');
+  await D.locator('.rail-btn', { hasText: 'Idag' }).click();
+  await D.locator('[data-vetrow="anna"] .bhead').click();
+  await D.locator('.stop', { hasText: 'Luna' }).click(); await p.waitForTimeout(400);
+  await D.locator('.dr-scroll').evaluate((el) => el.scrollTo(0, 9999)); await shot('coord-drawer-luna');
+});
+await b.close();
+finish('journal', errs);

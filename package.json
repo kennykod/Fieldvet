@@ -1,0 +1,26 @@
+{
+  "name": "fieldvet-demo",
+  "version": "0.9.0",
+  "private": true,
+  "description": "FieldVet – klickbar demoprototyp (fiktiv data, ingen backend)",
+  "scripts": {
+    "build": "node build.mjs",
+    "typecheck": "tsc -p .",
+    "test:unit": "tsx tests/domain.test.ts",
+    "test:e2e": "node build.mjs && node tests/flows.e2e.mjs && node tests/prod.e2e.mjs && node tests/journal.e2e.mjs && node tests/voice.e2e.mjs && node tests/slack.e2e.mjs && node tests/safety.e2e.mjs && node tests/import.e2e.mjs && node tests/ops.e2e.mjs && node tests/story.e2e.mjs && node tests/provet.e2e.mjs",
+    "test": "npm run test:unit && npm run test:e2e"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-icons": "^5.6.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "esbuild": "^0.27.0",
+    "playwright": "^1.56.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.0"
+  }
+}

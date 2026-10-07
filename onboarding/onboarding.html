@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><title>FieldVet – Kom igång</title>
+<style>
+/*FONTS*/
+@page { size: A4; margin: 15mm 16mm 17mm 16mm; }
+:root { --ink:#16222C; --ink2:#43545E; --ink3:#6B7B84; --line:#DCE7E3; --line2:#C9D8D2; --brand:#2A7867; --brand-ink:#1C5A4C; --soft:#E3F0EB; --tint:#F4F8F6; --warn:#9A6400; --warnsoft:#FBF1D9; --crit:#BF3A32; --critsoft:#FCEDEE; --nav:#2F6BD8; --navsoft:#E6EDFB; --bg:#F1F2EE; }
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; font-family: 'FV Sans', 'DejaVu Sans', sans-serif; font-size: 10pt; line-height: 1.5; color: var(--ink); background: #fff; }
+h1, h2, h3, h4 { font-family: 'FV Display', 'FV Sans', sans-serif; letter-spacing: -.01em; margin: 0; break-after: avoid; }
+h2 { font-size: 22pt; line-height: 1.08; margin: 2pt 0 6pt; }
+h3 { font-size: 12.5pt; margin: 12pt 0 4pt; }
+p { margin: 0 0 6pt; }
+ul, ol { margin: 0 0 6pt; padding-left: 14pt; }
+li { margin: 2pt 0; }
+b { color: #0E1A22; }
+.page { break-before: page; }
+.kick { font-size: 8.5pt; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--brand); display: flex; align-items: center; gap: 7pt; }
+.kick i { width: 18pt; height: 2pt; border-radius: 2pt; background: var(--brand); }
+.kick.vet { color: var(--nav); } .kick.vet i { background: var(--nav); }
+.lead { font-size: 11.5pt; color: var(--ink2); margin-bottom: 10pt; max-width: 150mm; }
+.muted { color: var(--ink3); }
+.small { font-size: 8.8pt; }
+img { display: block; width: 100%; }
+.shot { border-radius: 7pt; overflow: hidden; border: 1pt solid var(--line2); background: #fff; position: relative; }
+.phone { border-radius: 16pt; background: #1C2228; padding: 3pt; position: relative; }
+.phone img { border-radius: 13pt; }
+.cap { font-size: 8.7pt; color: var(--ink2); margin-top: 4pt; line-height: 1.35; }
+.cap b { display: block; font-size: 9.5pt; }
+.dot { position: absolute; width: 15pt; height: 15pt; border-radius: 50%; background: var(--ink); color: #fff; font-weight: 700; font-size: 8pt; display: grid; place-items: center; transform: translate(-50%, -50%); box-shadow: 0 0 0 2pt #fff; }
+.dot.vet { background: var(--nav); }
+.legend { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6pt; }
+.legend li { display: grid; grid-template-columns: 15pt 1fr; gap: 8pt; margin: 0; }
+.legend .n { width: 15pt; height: 15pt; border-radius: 50%; background: var(--ink); color: #fff; font-weight: 700; font-size: 8pt; display: grid; place-items: center; margin-top: 1pt; }
+.legend.vet .n { background: var(--nav); }
+.legend b { display: block; font-size: 10pt; }
+.legend span { font-size: 9.2pt; color: var(--ink2); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10pt; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8pt; }
+.box { border: 1pt solid var(--line); border-radius: 8pt; padding: 9pt 11pt; background: #fff; break-inside: avoid; }
+.box.tint { background: var(--tint); }
+.box.warn { background: var(--warnsoft); border-color: #EFDDB0; }
+.box.crit { background: var(--critsoft); border-color: #F2CDD1; }
+.box.blue { background: var(--navsoft); border-color: #D3DDF5; }
+.box .lbl { display: block; font-size: 7.8pt; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--brand); margin-bottom: 3pt; }
+.box.warn .lbl { color: var(--warn); } .box.crit .lbl { color: var(--crit); } .box.blue .lbl { color: var(--nav); }
+.box p:last-child, .box ul:last-child { margin-bottom: 0; }
+.steps { list-style: none; padding: 0; margin: 0; counter-reset: s; display: flex; flex-direction: column; gap: 8pt; }
+.steps > li { counter-increment: s; display: grid; grid-template-columns: 20pt 1fr; gap: 9pt; margin: 0; break-inside: avoid; }
+.steps > li::before { content: counter(s); width: 20pt; height: 20pt; border-radius: 50%; background: var(--brand); color: #fff; font-weight: 700; font-size: 10pt; display: grid; place-items: center; }
+.steps.vet > li::before { background: var(--nav); }
+.steps b { display: block; font-size: 10.5pt; }
+.steps span { color: var(--ink2); font-size: 9.4pt; }
+.steps span b { display: inline; font-size: inherit; }
+.flow { display: flex; align-items: center; gap: 4pt; flex-wrap: wrap; margin: 4pt 0 8pt; }
+.flow span { padding: 3pt 8pt; border-radius: 99pt; background: var(--sunken, #EBEDE8); font-weight: 700; font-size: 9pt; }
+.flow em { font-style: normal; color: var(--ink3); }
+.flow span.k { background: var(--soft); color: var(--brand-ink); }
+.chips { display: flex; gap: 6pt; flex-wrap: wrap; }
+.chip { display: inline-flex; align-items: center; gap: 5pt; padding: 3pt 9pt; border-radius: 99pt; font-size: 8.8pt; font-weight: 700; }
+.chip.c { background: var(--critsoft); color: var(--crit); }
+.chip.w { background: var(--warnsoft); color: var(--warn); }
+.chip.o { background: var(--soft); color: var(--brand-ink); }
+.chip.b { background: var(--navsoft); color: var(--nav); }
+table { width: 100%; border-collapse: collapse; font-size: 9.2pt; margin: 4pt 0 8pt; }
+td, th { border-bottom: 1pt solid var(--line); padding: 5pt 4pt; vertical-align: top; text-align: left; }
+th { font-size: 8pt; letter-spacing: .08em; text-transform: uppercase; color: var(--ink3); }
+td:first-child { width: 42%; font-weight: 700; }
+.row5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6pt; }
+.row4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8pt; }
+.arrow { text-align: center; color: var(--ink3); }
+.states { display: flex; flex-direction: column; gap: 9pt; }
+.st-row { display: grid; grid-template-columns: 74mm 1fr; gap: 9pt; align-items: center; }
+.st-row p { margin: 0; font-size: 9.2pt; color: var(--ink2); line-height: 1.4; }
+.st-row p b { color: var(--ink); }
+.st-row p b:first-child { display: block; font-size: 10pt; }
+
+/* cover */
+.cover { height: 262mm; display: flex; flex-direction: column; }
+.cover .brand { display: flex; align-items: center; gap: 9pt; font-family: 'FV Display'; font-weight: 700; font-size: 15pt; }
+.cover h1 { font-size: 40pt; line-height: 1.02; margin: 26mm 0 10pt; }
+.cover h1 em { font-style: normal; color: var(--brand); }
+.cover .sub { font-size: 13pt; color: var(--ink2); max-width: 140mm; }
+.cover .who { display: grid; grid-template-columns: 1fr 1fr; gap: 10pt; margin-top: 14pt; }
+.cover .who .box b { font-size: 12pt; display: block; }
+.cover .pics { position: relative; margin-top: 14pt; height: 92mm; }
+.cover .pics .shot { position: absolute; left: 0; top: 0; width: 140mm; }
+.cover .pics .phone { position: absolute; right: 0; top: 6mm; width: 40mm; }
+.cover .note { margin-top: auto; font-size: 8.8pt; color: var(--ink3); border-top: 1pt solid var(--line); padding-top: 6pt; }
+</style></head>
+<body>
+
+<!-- 1 · Omslag -->
+<section class="cover">
+  <div class="brand"><svg width="26" height="26" viewBox="0 0 32 32"><rect width="32" height="32" rx="9" fill="#2A7867"/><path d="M8.5 23.5c0-6 15-4.5 15-11.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="8.5" cy="23.5" r="2.6" fill="#fff"/><circle cx="23.5" cy="10" r="3.6" fill="#fff"/><circle cx="23.5" cy="10" r="1.4" fill="#2A7867"/></svg>FieldVet</div>
+  <h1>Kom igång med <em>FieldVet</em>.</h1>
+  <p class="sub">En kort guide för samordnare och veterinärer. Du arbetar i FieldVet, Provet sköter journal och kundmeddelanden i bakgrunden. Det tar tio minuter.</p>
+  <div class="who">
+    <div class="box tint"><span class="lbl">Samordnare · sidan 3–8</span><b>”Behöver något min uppmärksamhet?”</b><span class="muted small">Översikten, försening, akutärenden, kundmeddelanden via Provet och kliniken.</span></div>
+    <div class="box blue"><span class="lbl">Veterinär · sidan 9–13</span><b>”Vad gör jag nu?”</b><span class="muted small">Startsidan, dagens flöde, historik från Provet, när något händer, journalen.</span></div>
+  </div>
+  <div class="pics">
+    <div class="shot"><img src="../pitch/img/d-idag.jpg" alt=""></div>
+    <div class="phone"><img src="../pitch/img/m-home.jpg" alt=""></div>
+  </div>
+  <p class="note">Konceptprototyp med fiktiv data. Inget officiellt samarbete. Bilderna kommer från demon, som du kan prova själv (sidan 14).</p>
+</section>
+
+<!-- 2 · FieldVet på en sida -->
+<section class="page">
+  <div class="kick"><i></i>Innan du börjar</div>
+  <h2>FieldVet på en sida</h2>
+  <p class="lead">FieldVet planerar och kör dagens hembesök: vem åker vart, och när. Provet är fortfarande kliniksystemet för ägare, patienter, bokningar och journal. FieldVet använder Provet åt dig, i bakgrunden.</p>
+  <div class="grid2">
+    <div class="box tint"><span class="lbl">FieldVet gör</span>
+      <ul><li>Visar hela dagen på en skärm</li><li>Säger till innan något blir sent, med ett förslag</li><li>Hittar rätt veterinär till akutfall</li><li>Ber Provet skicka ankomsttid till djurägaren</li><li>Hämtar patienthistorik från Provet när veterinären ber om den</li><li>Visar veterinären exakt vad som är nästa steg</li></ul></div>
+    <div class="box"><span class="lbl" style="color:var(--ink3)">FieldVet gör inte</span>
+      <ul><li>Ersätter Provet</li><li>Bokar vanliga besök (de görs i Provet)</li><li>Skickar egna sms vid sidan av Provet</li><li>Gör medicinska bedömningar</li><li>Ändrar planen utan att någon godkänner</li></ul></div>
+  </div>
+  <h3>Fem ord för ett besök, överallt</h3>
+  <div class="flow"><span>Planerat</span><em>→</em><span>På väg</span><em>→</em><span>Framme</span><em>→</em><span>Pågår</span><em>→</em><span class="k">Klart</span></div>
+  <p class="small muted">Samma ord på dator, i appen, på kartan och i teamens rader.</p>
+  <h3>Färgerna betyder något</h3>
+  <div class="chips" style="margin-bottom:6pt"><span class="chip c">Röd · akut patient</span><span class="chip w">Gul · planering, t.ex. försening</span><span class="chip o">Grön · allt är okej</span><span class="chip b">Blå · på väg</span></div>
+  <p class="small">Röd är alltid en patient som behöver vård snabbt. Gul är ett planeringsproblem, som en försening. De blandas aldrig ihop. Brådskan bestäms av receptionen eller veterinären, aldrig av FieldVet.</p>
+  <h3>Tre saker som gör det tryggt</h3>
+  <div class="grid3">
+    <div class="box"><b>Du bestämmer</b><p class="small">FieldVet föreslår. Inget ändras förrän du trycker Godkänn eller Bekräfta.</p></div>
+    <div class="box"><b>Du kan ångra</b><p class="small">Efter en ändring visas en kort bekräftelse med Ångra.</p></div>
+    <div class="box"><b>Allt sparas</b><p class="small">Ändringar idag visar vem som ändrade vad och när. Den finns under Mer.</p></div>
+  </div>
+</section>
+
+<!-- 3 · Samordnare: översikten -->
+<section class="page">
+  <div class="kick"><i></i>Samordnare · 1 av 6</div>
+  <h2>Översikten på tre sekunder</h2>
+  <p class="lead">Öppna FieldVet och läs uppifrån. Är det lugnt står det <b>Allt ser bra ut</b>. Annars står det hur många saker som behöver dig.</p>
+  <div class="shot" style="margin-bottom:9pt">
+    <img src="../pitch/img/d-idag.jpg" alt="Samordnarens översikt">
+    <span class="dot" style="left:19%; top:10%;">1</span>
+    <span class="dot" style="left:74.5%; top:18.5%;">2</span>
+    <span class="dot" style="left:6.6%; top:20.3%;">3</span>
+    <span class="dot" style="left:30.4%; top:24.5%;">4</span>
+    <span class="dot" style="left:72.6%; top:28.5%;">5</span>
+    <span class="dot" style="left:93%; top:7.4%;">6</span>
+  </div>
+  <div class="grid2">
+    <ul class="legend">
+      <li><span class="n">1</span><div><b>Raden högst upp</b><span>Hur många som behöver din uppmärksamhet, hur många besök det finns och hur många som är klara.</span></div></li>
+      <li><span class="n">2</span><div><b>Behöver åtgärdas</b><span>Det enda stället där du behöver fatta beslut. Det viktigaste ligger överst. Varje rad har en knapp.</span></div></li>
+      <li><span class="n">3</span><div><b>En rad per team</b><span>Läget i en mening. Står det <i>enligt plan</i> behöver du inte göra något. Blir någon sen syns det i gult, ledig tid i grönt.</span></div></li>
+    </ul>
+    <ul class="legend">
+      <li><span class="n">4</span><div><b>Från nu och framåt</b><span>Besöken som block, den röda linjen är nu. <i>Hela dagen</i> visar allt. Dra ett besök till ett annat team, påverkan syns innan du släpper.</span></div></li>
+      <li><span class="n">5</span><div><b>Nästa timme</b><span>Vad som händer härnäst, alla team i en lista. Kartan ligger under och kan döljas.</span></div></li>
+      <li><span class="n">6</span><div><b>Nytt akutärende</b><span>När receptionen ringer om ett akut djur. Se sidan 5.</span></div></li>
+    </ul>
+  </div>
+  <div class="box tint" style="margin-top:9pt"><span class="lbl">Tips</span><p>Klicka på ett team för hela dagens lista, eller på ett besök för detaljer. Tangenter: <b>N</b> nytt akutärende, <b>/</b> sök, <b>Esc</b> tillbaka, <b>Ctrl+Z</b> ångra.</p></div>
+</section>
+
+<!-- 4 · Samordnare: lös en försening -->
+<section class="page">
+  <div class="kick"><i></i>Samordnare · 2 av 6</div>
+  <h2>Lös en försening i tre klick</h2>
+  <p class="lead">När ett besök drar över räknar FieldVet om dagen direkt. Riskerar nästa kund att få vänta, dyker det upp under Behöver åtgärdas, innan kunden märker något.</p>
+  <div class="grid2" style="grid-template-columns: 1fr 1.05fr; align-items:start">
+    <div>
+      <ol class="steps">
+        <li><div><b>Tryck Se lösning</b><span>Raden säger vad som händer och varför: ”Milo riskerar att bli 20 min sen · Lunas besök drar över”.</span></div></li>
+      </ol>
+      <div class="shot" style="margin:6pt 0 12pt 29pt"><img src="../pitch/img/e-queue.jpg" alt=""></div>
+      <ol class="steps" start="2" style="counter-reset: s 1">
+        <li><div><b>Läs förslaget, tryck Godkänn</b><span>FieldVet visar ett förslag först, i vanlig svenska. Vill du något annat finns <i>Visa andra alternativ</i>: behåll planen och skicka ny tid till ägaren, eller välj ett team själv.</span></div></li>
+        <li><div><b>Klart</b><span>Du ser resultatet på en rad. Veterinärerna har fått den nya planen i appen och ägaren har fått ny tid. Ångrade du dig? Tryck <b>Ångra</b>.</span></div></li>
+      </ol>
+      <div class="shot" style="margin:6pt 0 0 29pt"><img src="../pitch/img/e-toast.jpg" alt=""></div>
+    </div>
+    <div>
+      <div class="shot"><img src="../pitch/img/e-fix.jpg" alt="Förslag med Godkänn"></div>
+      <p class="cap"><b>Ett förslag, med villkoren synliga</b>Godkänn går inte att trycka om förslaget bryter mot behörighet, utrustning eller arbetstid.</p>
+    </div>
+  </div>
+  <div class="box warn" style="margin-top:10pt"><span class="lbl">Bra att veta</span><p>Ett besök med <b>låst tid</b> (ägaren har fått en bekräftad tid) flyttas aldrig automatiskt. Förslagen jobbar runt det.</p></div>
+</section>
+
+<!-- 5 · Samordnare: akutärende -->
+<section class="page">
+  <div class="kick"><i></i>Samordnare · 3 av 6</div>
+  <h2>Nytt akutärende</h2>
+  <p class="lead">När en djurägare ringer och djuret behöver hjälp idag. Du skriver in ärendet medan du pratar med kunden. Vanliga bokningar görs i Provet.</p>
+  <ol class="steps">
+    <li><div><b>Tryck Nytt akutärende</b><span>Formuläret är tomt. Har receptionen redan skickat ärendet trycker du Tilldela i stället, då är allt ifyllt.</span></div></li>
+    <li><div><b>Skriv in det kunden berättar</b><span>Djur, ägare och telefon (för sms med ankomsttid). Skriv gatuadress och postnummer. Står <b>Hittad</b> under adressen vet FieldVet var det är. Känner FieldVet igen adressen föreslås den medan du skriver. Fyll sedan i hur bråttom det är, en kort anledning och typ av besök (den avgör utrustningen).</span></div></li>
+  </ol>
+  <div class="shot" style="margin:7pt 0 10pt; width:150mm"><img src="../pitch/img/e-urgent-form.jpg" alt="Formulär för nytt akutärende"></div>
+  <div style="display:grid; grid-template-columns: 1fr 64mm 40mm; gap: 10pt; align-items:start">
+    <ol class="steps" style="counter-reset: s 2">
+      <li><div><b>Tryck Hitta veterinär</b><span>FieldVet visar det team som passar bäst: körtid, vad som händer med deras nästa besök och när de kan vara framme. Inget läggs in än.</span></div></li>
+      <li><div><b>Tryck Tilldela</b><span>Veterinären ser besöket direkt och trycker <b>Uppfattat</b>. Provet skickar ankomsttiden till ägaren.</span></div></li>
+    </ol>
+    <div><div class="shot"><img src="../pitch/img/e-urgent-one.jpg" alt="Förslag på team"></div><p class="cap"><b>Ett förslag</b>Fler team under <i>Visa andra team</i>.</p></div>
+    <div><div class="phone"><img src="../pitch/img/m-ack.jpg" alt="Veterinären bekräftar"></div><p class="cap"><b>Veterinären</b>Trycker Uppfattat.</p></div>
+  </div>
+  <p class="small muted" style="margin-top:6pt">Hittar FieldVet inte området väljer du stadsdel i listan under adressen. Passar inget team inom vald tid står det varför. Välj då en längre tid, eller be ägaren komma in till kliniken.</p>
+</section>
+
+<!-- 6 · Samordnare: kundmeddelanden via Provet -->
+<section class="page">
+  <div class="kick"><i></i>Samordnare · 4 av 6</div>
+  <h2>Kundmeddelanden via Provet</h2>
+  <p class="lead">Du skriver inga sms. När veterinären börjar köra, eller när ankomsten flyttas mer än 10 minuter, ber FieldVet Provet skicka klinikens meddelande. Du ser bara läget, i besöket och på teamets rad.</p>
+  <div class="grid2" style="grid-template-columns: 1.4fr 0.6fr; align-items:start; gap:14pt">
+    <div class="states">
+      <div class="st-row"><div class="shot"><img src="../pitch/img/e-dr-eta-updated.jpg" alt=""></div><p><b>Informerad via Provet ✓</b>Inget att göra. <i>Visa skickat meddelande</i> visar exakt vad ägaren fick.</p></div>
+      <div class="st-row"><div class="shot"><img src="../pitch/img/e-dr-eta-failed.jpg" alt=""></div><p><b>Kunde inte skickas</b>Provet svarar inte. Tryck <b>Försök igen</b> eller ring ägaren. Samma meddelande skickas aldrig två gånger.</p></div>
+      <div class="st-row"><div class="shot"><img src="../pitch/img/e-dr-eta-blocked.jpg" alt=""></div><p><b>Tar inte emot sms</b>Ägarens val i Provet gäller. Ring och tryck <b>Jag har ringt</b>.</p></div>
+      <div class="st-row"><div class="shot"><img src="../pitch/img/e-row-comm.jpg" alt=""></div><p><b>På teamets rad</b>Medan veterinären kör ser du om ägaren har fått tiden.</p></div>
+    </div>
+    <div>
+      <div class="shot"><img src="../pitch/img/c-customer-phone-bosse.jpg" alt="Det ägaren ser"></div>
+      <p class="cap"><b>Det här får ägaren</b>Klinikens sms och en länk med förnamn, tid och status. Aldrig anledning, journal eller exakt position.</p>
+    </div>
+  </div>
+  <div class="box warn" style="margin-top:10pt"><span class="lbl">Under Behöver åtgärdas</span><p>Bara när något inte gick ut: <i>Kundmeddelandet kunde inte skickas</i> eller <i>Ring Gunnel om ankomsttiden?</i>. Veterinären behöver aldrig felsöka, det är ditt ärende.</p></div>
+  <h3>Hela dagens trafik med Provet</h3>
+  <div class="shot"><img src="../pitch/img/e-provet-sync.jpg" alt="System, Provet idag"></div>
+  <p class="cap">Under <b style="display:inline">System → Provet idag</b>: skickat, väntar, misslyckat, ägarens val i Provet och stoppade dubbletter. Svarar Provet inte köas meddelandena och skickas när Provet svarar igen.</p>
+</section>
+
+<!-- 7 · Samordnare: kliniken -->
+<section class="page">
+  <div class="kick"><i></i>Samordnare · 5 av 6</div>
+  <h2>Vidare till kliniken</h2>
+  <p class="lead">När veterinären bedömer att djuret behöver fortsatt vård på kliniken skickar hon det från besöket. Du ordnar tiden.</p>
+  <div class="grid2" style="align-items:start">
+    <div>
+      <ol class="steps">
+        <li><div><b>Ärendet dyker upp i rött</b><span>”Tessan behöver klinik idag”, med anledningen från veterinären.</span></div></li>
+        <li><div><b>Tryck Ordna, sedan Bekräfta</b><span>FieldVet föreslår nästa lediga kliniktid i Provet. Andra alternativ: akut ankomst nu, eller vänta tills du har pratat med ägaren.</span></div></li>
+        <li><div><b>Alla får besked</b><span>Veterinären i appen, ägaren via Provet och kliniken i Slack.</span></div></li>
+      </ol>
+      <div class="shot" style="margin:8pt 0 0 29pt"><img src="../pitch/img/e-attention-handoff.jpg" alt=""></div>
+    </div>
+    <div class="shot"><img src="../pitch/img/e-handoff-top.jpg" alt="Förslag på kliniktid"></div>
+  </div>
+  <div class="box" style="margin-top:12pt"><span class="lbl" style="color:var(--ink3)">Avgränsning</span><p>Det här är en operativ överlämning. Den kliniska bedömningen skrivs i journalen i Provet, som vanligt.</p></div>
+</section>
+
+<!-- 7 · Samordnare: bra att veta -->
+<section class="page">
+  <div class="kick"><i></i>Samordnare · 6 av 6</div>
+  <h2>Bra att veta</h2>
+  <table>
+    <tr><th>Jag vill …</th><th>Gör så här</th></tr>
+    <tr><td>Flytta ett besök till en annan veterinär</td><td>Dra blocket till ett annat team. Påverkan syns innan du släpper, och du bekräftar efteråt. Eller öppna besöket och tryck <b>Flytta besök</b>.</td></tr>
+    <tr><td>Se om hela dagen kan gå bättre</td><td><b>Mer → Se förslag för hela dagen</b>. Du jämför före och efter och godkänner.</td></tr>
+    <tr><td>Läsa in dagens bokningar från en fil</td><td><b>Mer → Importera bokningar</b>. Reservväg om Provet-kopplingen inte är aktiv: Excel eller CSV.</td></tr>
+    <tr><td>Se vem som ändrade vad</td><td><b>Mer → Visa ändringar idag</b>. Hela granskningsloggen finns under System.</td></tr>
+    <tr><td>Se att ägaren fick tiden</td><td>Öppna besöket. Raden visar <b>Ägaren informerad via Provet ✓</b>.</td></tr>
+    <tr><td>Se hur kopplingen till Provet mår</td><td><b>System → Provet idag</b>: skickat, väntar, misslyckat och stoppade dubbletter.</td></tr>
+    <tr><td>Låsa en tid som ägaren har bekräftat</td><td>Öppna besöket, tryck <b>Mer → Lås tiden</b>. Den flyttas då aldrig automatiskt.</td></tr>
+    <tr><td>Avboka ett besök</td><td>Öppna besöket, <b>Mer → Avboka besöket</b>. Du får en fråga innan det händer, och kan ångra.</td></tr>
+    <tr><td>Skriva till en veterinär</td><td>Klicka på teamet och tryck <b>Meddelande</b>, eller gå till Meddelanden i menyn till vänster.</td></tr>
+    <tr><td>Se körtid, kilometer och dagens siffror</td><td><b>Rapport</b> i menyn till vänster. Det hör inte till det dagliga arbetet, så det ligger där.</td></tr>
+  </table>
+  <div class="grid3" style="align-items:start">
+    <div><div class="shot" style="max-height:56mm"><img src="../pitch/img/e-mer-menu.jpg" alt="Menyn Mer"></div><p class="cap"><b>Mer</b>Det du behöver ibland.</p></div>
+    <div><div class="shot" style="max-height:56mm"><img style="height:56mm; object-fit:cover; object-position:bottom" src="../pitch/img/e-locked.jpg" alt="Lås tiden under Mer"></div><p class="cap"><b>Mer i ett besök</b>Lås tiden eller avboka.</p></div>
+    <div><div class="shot" style="max-height:56mm"><img src="../pitch/img/e-history-top.jpg" alt="Ändringar idag"></div><p class="cap"><b>Ändringar idag</b>Vem, vad och när.</p></div>
+  </div>
+</section>
+
+<!-- 8 · Veterinär: startsidan -->
+<section class="page">
+  <div class="kick vet"><i></i>Veterinär · 1 av 5</div>
+  <h2>Startsidan: vad gör jag nu?</h2>
+  <p class="lead">Öppna appen. Allt på startsidan handlar om nästa besök. Resten av dagen ligger under Rutt.</p>
+  <div class="grid2" style="grid-template-columns: 74mm 1fr; gap: 14pt; align-items:start">
+    <div class="phone">
+      <img src="../pitch/img/m-home.jpg" alt="Startsidan">
+      <span class="dot vet" style="left:5%; top:25%;">1</span>
+      <span class="dot vet" style="left:5%; top:33%;">2</span>
+      <span class="dot vet" style="left:5%; top:41%;">3</span>
+      <span class="dot vet" style="left:5%; top:51.5%;">4</span>
+      <span class="dot vet" style="left:5%; top:70%;">5</span>
+      <span class="dot vet" style="left:5%; top:82.5%;">6</span>
+      <span class="dot vet" style="left:70%; top:11.5%;">7</span>
+    </div>
+    <ul class="legend vet">
+      <li><span class="n">1</span><div><b>Nästa patient</b><span>Namn, ras och typ av besök. Tryck för detaljer om besöket.</span></div></li>
+      <li><span class="n">2</span><div><b>Vart</b><span>Område och gatuadress.</span></div></li>
+      <li><span class="n">3</span><div><b>Tre tider, tre betydelser</b><span><b style="display:inline">Åk senast</b> när du måste åka. <b style="display:inline">Framme ca</b> när du beräknas vara framme. <b style="display:inline">Bokad tid</b> det ägaren har fått. Blir du sen syns det i gult.</span></div></li>
+      <li><span class="n">4</span><div><b>Det viktiga inför besöket</b><span>Varningar, allergier och mediciner från Provet, det du behöver ta med utöver standardväskan, och parkering. Under finns <b style="display:inline">Ring</b> och <b style="display:inline">Visa historik</b>.</span></div></li>
+      <li><span class="n">5</span><div><b>Senare idag</b><span>Hur många besök som är kvar. Tryck för hela rutten.</span></div></li>
+      <li><span class="n">6</span><div><b>Knappen</b><span>Alltid en sak att göra, alltid på samma plats, nära tummen.</span></div></li>
+      <li><span class="n">7</span><div><b>Fråga och profil</b><span>Mikrofonen: fråga med rösten, t.ex. ”Vad är portkoden?”. Bilden: arbetstid, bil och inställningar.</span></div></li>
+    </ul>
+  </div>
+  <div class="box blue" style="margin-top:10pt"><span class="lbl">Tre flikar</span><p><b>Idag</b> nästa besök · <b>Rutt</b> hela dagen på karta · <b>Inkorg</b> meddelanden från samordnaren. Du behöver inte öppna Provet under dagen.</p></div>
+</section>
+
+<!-- 9 · Veterinär: dagens flöde -->
+<section class="page">
+  <div class="kick vet"><i></i>Veterinär · 2 av 5</div>
+  <h2>Dagens flöde: en knapp i taget</h2>
+  <p class="lead">Knappen längst ner byter text efter vad som är nästa steg. Du behöver aldrig leta.</p>
+  <div class="row5">
+    <div><div class="phone"><img src="../pitch/img/m-home.jpg" alt=""></div><p class="cap"><b>1. Starta navigering</b>Du är På väg. Provet skickar tiden, du ser <i>informerad via Provet ✓</i>.</p></div>
+    <div><div class="phone"><img src="../pitch/img/m-onway.jpg" alt=""></div><p class="cap"><b>2. Jag är framme</b>Tryck när du står vid dörren. Portkoden visas.</p></div>
+    <div><div class="phone"><img src="../pitch/img/m-arrived.jpg" alt=""></div><p class="cap"><b>3. Starta besök</b>Klockan startar. Förläng om det tar längre tid.</p></div>
+    <div><div class="phone"><img src="../pitch/img/m-invisit.jpg" alt=""></div><p class="cap"><b>4. Avsluta besök</b>Anteckningar och bilder är frivilliga, under länken.</p></div>
+    <div><div class="phone"><img src="../pitch/img/m-after.jpg" alt=""></div><p class="cap"><b>5. Diktera journal</b>Eller Nästa besök. Journalen kan vänta tills det passar.</p></div>
+  </div>
+  <div class="grid2" style="margin-top:12pt">
+    <div class="box"><span class="lbl">Förläng</span><p>Drar besöket ut? Tryck <b>Förläng</b> och välj 10, 25 eller 45 minuter. Resten av dagen räknas om direkt och samordnaren ser den nya tiden. Du behöver inte ringa.</p></div>
+    <div class="box"><span class="lbl">Besöket</span><p>Tryck på djurets namn: anledning, viktigt inför besöket, åtkomst, vad du ska ta med och ägarens nummer. Tidigare besök finns under <b>Visa historik</b>.</p></div>
+  </div>
+</section>
+
+<!-- 10 · Veterinär: historik -->
+<section class="page">
+  <div class="kick vet"><i></i>Veterinär · 3 av 5</div>
+  <h2>Visa historik: Provet, utan att byta app</h2>
+  <p class="lead">Hur gick det förra gången? Du behöver inte öppna Provet. Historiken hämtas när du ber om den och går bara att läsa.</p>
+  <div class="grid3" style="align-items:start">
+    <div><div class="phone"><img src="../pitch/img/m-detail-top.jpg" alt=""></div><p class="cap"><b>1. Tryck Visa historik</b>På besökskortet, i besöket eller under besöket.</p></div>
+    <div><div class="phone"><img src="../pitch/img/m-history.jpg" alt=""></div><p class="cap"><b>2. Läs</b>Datum, typ, diagnos och läkemedel. Hämtat från Provet, med tid.</p></div>
+    <div><div class="phone"><img src="../pitch/img/m-history-note.jpg" alt=""></div><p class="cap"><b>3. Vid behov</b>Visa hela anteckningen, en i taget. Pilen tillbaka: du är kvar där du var.</p></div>
+  </div>
+  <div class="grid2" style="margin-top:12pt">
+    <div class="box blue"><span class="lbl">Bra att veta</span><ul><li>Bara dina patienter idag. Varje läsning loggas.</li><li>Ändringar görs i Provet. <i>Öppna i Provet</i> finns längst ner.</li><li>Samordnaren ser aldrig historiken.</li></ul></div>
+    <div class="box"><span class="lbl" style="color:var(--ink3)">Utan täckning eller om Provet inte svarar</span><p>Offline visas en kort sparad sammanfattning, som raderas när passet slutar. Svarar inte Provet står det i klartext. Det viktigaste inför besöket finns alltid kvar på besökskortet.</p></div>
+  </div>
+</section>
+
+<!-- 10 · Veterinär: när något händer -->
+<section class="page">
+  <div class="kick vet"><i></i>Veterinär · 4 av 5</div>
+  <h2>När något händer</h2>
+  <p class="lead">Appen säger till lugnt, med ett tydligt val. Du behöver inte ringa samordnaren för att planen ska hänga med.</p>
+  <div class="row5">
+    <div><div class="phone"><img src="../pitch/img/m-delay.jpg" alt=""></div><p class="cap"><b>Du ligger efter</b>Fortsätt enligt plan, eller Se förslag och skicka det till samordnaren.</p></div>
+    <div><div class="phone"><img src="../pitch/img/m-ack.jpg" alt=""></div><p class="cap"><b>Nytt akutbesök</b>Syns överst. Tryck Uppfattat så vet samordnaren att du har sett det.</p></div>
+    <div><div class="phone"><img src="../pitch/img/m-handoff.jpg" alt=""></div><p class="cap"><b>Djuret behöver kliniken</b>Fortsatt vård på klinik: Nu, Idag eller Planerat, en kort anledning, Skicka.</p></div>
+    <div><div class="phone"><img src="../pitch/img/m-clinic.jpg" alt=""></div><p class="cap"><b>Kliniken har svarat</b>Tiden står i besöket. Ägaren har fått den. Avsluta som vanligt.</p></div>
+    <div><div class="phone"><img src="../pitch/img/m-failed.jpg" alt=""></div><p class="cap"><b>Sms:et gick inte ut</b>En rad, inget att göra. Samordnaren tar det. Kör vidare.</p></div>
+  </div>
+  <div class="grid2" style="margin-top:12pt">
+    <div class="box"><span class="lbl" style="color:var(--ink3)">Ingen täckning</span><p>Du ser fortfarande nästa besök och kan trycka på knapparna som vanligt. Ändringarna skickas när täckningen är tillbaka.</p></div>
+    <div class="box"><span class="lbl" style="color:var(--ink3)">Ändrat av samordnaren</span><p>Har ett besök flyttats till dig eller fått ny tid står det på kortet, t.ex. ”Ändrat av Maria · flyttat från Anna”.</p></div>
+  </div>
+</section>
+
+<!-- 11 · Veterinär: journal -->
+<section class="page">
+  <div class="kick vet"><i></i>Veterinär · 5 av 5</div>
+  <h2>Journalen på en halv minut</h2>
+  <p class="lead">Prata in journalen i bilen direkt efter besöket. Du får ett utkast att granska. Inget sparas förrän du signerar.</p>
+  <div class="grid3" style="align-items:start">
+    <div><div class="phone"><img src="../pitch/img/m-jr-rec.jpg" alt=""></div><p class="cap"><b>1. Prata</b>Tryck Diktera journal och berätta som du skulle göra för en kollega.</p></div>
+    <div><div class="phone"><img src="../pitch/img/m-jr-draft.jpg" alt=""></div><p class="cap"><b>2. Granska</b>Det som saknas eller är osäkert är markerat, t.ex. ett batchnummer.</p></div>
+    <div><div class="phone"><img src="../pitch/img/m-jr-signed.jpg" alt=""></div><p class="cap"><b>3. Signera</b>Journalen sparas i Provet. Samordnaren ser bara att den är signerad.</p></div>
+  </div>
+  <div class="box tint" style="margin-top:12pt"><span class="lbl">Bra att veta</span><ul><li>Ljudet sparas inte.</li><li>Samordnaren ser aldrig journaltexten, bara status och underlag för fakturering.</li><li>Hinner du inte? Journalen ligger kvar på startsidan som <i>Journal att signera</i>.</li></ul></div>
+</section>
+
+<!-- 12 · Prova själv -->
+<section class="page">
+  <div class="kick"><i></i>Prova själv</div>
+  <h2>Testa i demon, det går inte att göra fel</h2>
+  <p class="lead">Demon har påhittade djur, ägare och adresser. Inget du gör sparas. Återställ när du vill.</p>
+  <ol class="steps">
+    <li><div><b>Öppna demon</b><span>fieldvettest.kennylantz1337.workers.dev · på dator för samordnarvyn, på mobil för veterinärens app.</span></div></li>
+    <li><div><b>Välj Båda samtidigt</b><span>Högst upp i mitten. Då ser du dashboarden och appen sida vid sida och hur de hänger ihop.</span></div></li>
+    <li><div><b>Kör den guidade demon</b><span>Demo → <b>Guidad demo</b>. Nio steg på ca tre minuter: försening, akutärende, ny tid till ägaren och vidare till kliniken. Varje steg visar vilken knapp du ska trycka på.</span></div></li>
+    <li><div><b>Provet i bakgrunden</b><span>Demo → <b>Guidad demo: Provet i bakgrunden</b>. Ca en minut: på väg, informerad via Provet, Visa historik, ny tid en gång och ingen dubblett.</span></div></li>
+    <li><div><b>Klicka runt själv</b><span>Under Demo kan du låta ett besök dra över, ge köer på vägen, låta Provet sluta svara eller låta en veterinär tappa täckning.</span></div></li>
+    <li><div><b>Börja om</b><span>Demo → <b>Återställ demo</b> tar dig tillbaka till kl. 08:20.</span></div></li>
+  </ol>
+  <h3>Vanliga frågor</h3>
+  <table>
+    <tr><td>Kan FieldVet flytta besök av sig själv?</td><td>Nej. FieldVet föreslår, en människa godkänner. Låsta tider rörs aldrig.</td></tr>
+    <tr><td>Vem bestämmer om något är akut?</td><td>Receptionen eller veterinären. FieldVet planerar efter det, men bedömer aldrig djurets tillstånd.</td></tr>
+    <tr><td>Skickar FieldVet sms?</td><td>Nej. FieldVet ber Provet skicka klinikens meddelande. Ägarens val i Provet gäller, och samma meddelande skickas aldrig två gånger.</td></tr>
+    <tr><td>Behöver jag öppna Provet under dagen?</td><td>Nej, inte för tid till ägaren eller historik. <i>Öppna i Provet</i> finns när du behöver något mer.</td></tr>
+    <tr><td>Var finns journalen?</td><td>I Provet, som idag. FieldVet skickar dit den signerade journalen.</td></tr>
+    <tr><td>Om jag gör fel?</td><td>Tryck Ångra direkt efter ändringen. Allt finns också i historiken.</td></tr>
+  </table>
+  <p class="small muted" style="margin-top:10pt">Konceptprototyp med fiktiv data. Inget officiellt samarbete eller godkänd produkt. Provet, sms, Slack och karttjänst är simulerade i demon.</p>
+</section>
+
+</body></html>

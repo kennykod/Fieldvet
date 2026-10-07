@@ -1,0 +1,19 @@
+﻿Bokningsnr;Datum;Starttid;Resurs;Bokningstyp;Djur;Djurslag;Kund;Mobil;Adress;Postnr;Ort;Kommentar
+50112;2026-10-01;08:30;Anna Lindqvist;Vaccination;Molly;Hund;Petra Sjöberg;070-111 22 01;Sankt Eriksgatan 58;113 34;Stockholm;Portkod 1942
+50113;2026-10-01;08:40;Sara Nyström;Hälsokontroll senior;Doris;Katt;Gunnar Åberg;070-111 22 02;Strandvägen 29;114 56;Stockholm;Hiss finns
+50114;2026-10-01;09:00;Johan Berg;Hälta höger bak;Rocky;Hund;Emma Lund;070-111 22 03;Götgatan 71;116 21;Stockholm;
+50115;2026-10-01;09:15;Erik Holm;Urinvägsbesvär;Smilla;Katt;Olof Berg;070-111 22 04;Drottningholmsvägen 190;168 66;Bromma;Villa, grind
+50116;2026-10-01;09:30;;Vaccination;Sixten;Hund;Maja Holm;070-111 22 05;Hantverkargatan 44;112 21;Stockholm;
+50117;2026-10-01;09:45;Anna Lindqvist;Tandkontroll;Nisse;Kanin;Leo Strand;070-111 22 06;Odengatan 90;113 22;Stockholm;Portkod 7731
+50118;2026-10-01;10:00;Sara Nyström;Hud och klåda;Bamse;Hund;Ida Wiklund;070-111 22 07;Valhallavägen 150;115 24;Stockholm;
+50119;2026-10-01;10:15;Johan Berg;Blodprov;Frida;Katt;Anton Lind;070-111 22 08;Hammarby allé 47;120 63;Stockholm;Gästparkering
+50120;2026-10-01;10:30;;Akut kräkningar;Tage;Katt;Sofia Ek;070-111 22 09;Fleminggatan 18;112 26;Stockholm;Ring vid ankomst
+50121;2026-10-01;10:45;Erik Holm;Sårkontroll;Kaj;Hund;Nils Borg;070-111 22 10;Solnavägen 12;171 65;Solna;
+50122;2026-10-01;11:00;Anna Lindqvist;Öronbesvär;Ludde;Hund;Karin Falk;070-111 22 11;Upplandsgatan 30;113 60;Stockholm;
+50123;2026-10-01;11:30;Sara Nyström;Kloklippning;Mimmi;Katt;Hanna Wall;070-111 22 12;Lidingövägen 75;115 41;Stockholm;
+50124;2026-10-01;12:30;Johan Berg;Uppföljning;Rex;Hund;Oskar Dahl;070-111 22 13;Hornsgatan 124;117 28;Stockholm;
+50125;2026-10-01;13:00;Erik Holm;Andningsbesvär;Zelda;Katt;Lisa Nord;070-111 22 14;Ålstensgatan 20;167 65;Bromma;
+50126;2026-10-01;13:15;Anna Lindqvist;Vaccination;Pixel;Katt;Jonas Kvist;070-111 22 15;Kistagången 14;164 40;Kista;
+50127;2026-10-01;13:45;Sara Nyström;Seniorkontroll;Elvis;Hund;Anna Frisk;070-111 22 16;Karlavägen 41;114 31;Stockholm;
+50128;2026-10-01;14:00;Johan Berg;Vaccination;Tussan;Katt;Eva Sand;070-111 22 17;Sickla allé 5;131 65;Nacka;
+50129;2026-10-01;14:30;Erik Holm;Hud och klåda;Charlie;Hund;Per Ahl;070-111 22 18;Tomtebogatan 22;113 38;Stockholm;

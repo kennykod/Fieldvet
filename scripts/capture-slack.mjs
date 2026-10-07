@@ -1,0 +1,26 @@
+// Slack tab screenshots for the pitch.
+import { createRequire } from 'module';
+const require = createRequire('/home/claude/.npm-global/lib/node_modules/');
+const { chromium } = require('playwright');
+const OUT = '/home/claude/fieldvet/pitch/shots';
+const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const errs = [];
+const p = await b.newPage({ viewport: { width: 1440, height: 940 }, deviceScaleFactor: 2 });
+p.on('pageerror', (e) => errs.push(e.message));
+await p.goto('file:///home/claude/fieldvet/dist/fieldvet.local.html?intro=0#samordnare'); await p.waitForTimeout(700);
+const D = p.locator('.dash');
+await D.locator('.rail-btn', { hasText: 'Slack' }).click(); await p.waitForTimeout(300);
+await D.locator('.sk-compose input').fill('Vi tar henne. Bokar och återkommer med tid.');
+await D.locator('.sk-compose button[type=submit]').click();
+await D.getByRole('button', { name: 'Skapa hembesök' }).click();
+await p.getByRole('button', { name: 'Hitta veterinär' }).click(); await p.waitForTimeout(400);
+await p.locator('.modal-foot').getByRole('button', { name: /^Tilldela/ }).click(); await p.waitForTimeout(300);
+await D.locator('.rail-btn', { hasText: 'Slack' }).click();
+await D.locator('.sk-item', { hasText: 'Ägare ringde' }).click();
+await p.evaluate(() => { document.body.classList.add('shot'); document.querySelectorAll('.toast, .toasts').forEach((t) => t.remove()); });
+await p.waitForTimeout(1200);
+await p.evaluate(() => document.querySelectorAll('.toast, .toasts').forEach((t) => t.remove()));
+await p.screenshot({ path: `${OUT}/d-slack.png` });
+await D.locator('.slackview').screenshot({ path: `${OUT}/e-slack.png` });
+await b.close();
+console.log('errors', errs);
