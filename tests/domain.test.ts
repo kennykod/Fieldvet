@@ -142,7 +142,7 @@ test('a suggestion made before the vet moved on cannot give an impossible route'
 console.log(`\n${passed} tester godkända`);
 
 // ——— access layer ———
-import { can, viewWorld, redactVisit } from '../src/shared/access';
+import { viewWorld, redactVisit } from '../src/shared/access';
 import { autoSigned } from '../src/shared/journal';
 console.log('Access');
 test('unknown role is denied (fail closed)', () => {

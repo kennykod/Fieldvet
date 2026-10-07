@@ -1,5 +1,5 @@
 import { initialWorld } from '../src/shared/world';
-import { planAll, hhmm, metrics, suggest, fixesFor, optimizeDay, advance, type World } from '../src/shared/engine';
+import { planAll, hhmm, metrics, type World } from '../src/shared/engine';
 import { VETS } from '../src/shared/data';
 export function show(w: World, label: string) {
   console.log(`\n=== ${label} @ ${hhmm(w.now)} ===`);
