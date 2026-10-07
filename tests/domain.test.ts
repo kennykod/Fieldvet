@@ -9,6 +9,7 @@ import { t } from '../src/shared/data';
 import { URGENT_PRESET, type Visit } from '../src/shared/data';
 import { COMM_RULES, commKey, isDuplicate, provet, provetStatus, shouldUpdateEta, type CommEvent } from '../src/shared/provet';
 import { can } from '../src/shared/access';
+import { easeProgress } from '../src/map';
 
 let passed = 0;
 const test = (name: string, fn: () => void) => { fn(); passed++; console.log('  ✓', name); };
@@ -263,6 +264,14 @@ test('Provet preferences decide whether an owner can get sms', () => {
 test('only veterinarians may read patient history; coordinators and admins may not', () => {
   assert.ok(can('veterinar', 'history:read'));
   assert.ok(!can('samordnare', 'history:read') && !can('admin', 'history:read') && !can(null, 'history:read'));
+});
+test('map animation progress stays within 0–1 even if the frame time is before the start', () => {
+  assert.equal(easeProgress(-5, 480), 0);
+  assert.equal(easeProgress(0, 480), 0);
+  assert.equal(easeProgress(480, 480), 1);
+  assert.equal(easeProgress(900, 480), 1);
+  const mid = easeProgress(240, 480);
+  assert.ok(mid > 0.5 && mid < 1, 'ease-out is past halfway at half time');
 });
 void (async () => {
   // Adapter-level idempotency and availability (async).

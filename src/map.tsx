@@ -202,6 +202,15 @@ interface Props {
   vetCard?: { vetId: string; node: ReactNode } | null;
 }
 
+/**
+ * Eased animation progress in [0, 1]. A frame timestamp can be slightly earlier than the start
+ * time, so elapsed may be negative; clamping keeps the viewBox from overshooting into negative sizes.
+ */
+export function easeProgress(elapsed: number, ms: number): number {
+  const f = Math.max(0, Math.min(1, elapsed / ms));
+  return 1 - Math.pow(1 - f, 3);
+}
+
 export function CityMap({ routes, visits, focus, focusKey, selectedVisit, onVisitClick, onVetClick, showVets = true, extraPins = [], compact, padPx = 40, overlay, controls = true, lateIds, staleVets, vetCard }: Props) {
   const box = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ w: 800, h: 500 });
@@ -226,10 +235,9 @@ export function CityMap({ routes, visits, focus, focusKey, selectedVisit, onVisi
     if (reduce || ms === 0) { setVb(target); return; }
     const t0 = performance.now();
     const step = (t: number) => {
-      const f = Math.min(1, (t - t0) / ms);
-      const e = 1 - Math.pow(1 - f, 3);
+      const e = easeProgress(t - t0, ms);
       setVb({ x: from.x + (target.x - from.x) * e, y: from.y + (target.y - from.y) * e, w: from.w + (target.w - from.w) * e, h: from.h + (target.h - from.h) * e });
-      if (f < 1) anim.current = requestAnimationFrame(step);
+      if (e < 1) anim.current = requestAnimationFrame(step);
     };
     anim.current = requestAnimationFrame(step);
   };
