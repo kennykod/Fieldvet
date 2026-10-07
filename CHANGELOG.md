@@ -1,5 +1,12 @@
 # Ändringslogg
 
+## Kartan hackar inte längre, alla tester gröna (7 oktober 2026)
+
+**Rättat**
+- **Kartan:** zoomanimeringen kunde ge negativa mått och få kartan att blinka. Webbläsarens bildrutetid kan ligga lite före starttiden, och då blev framstegen negativa. Framstegen hålls nu mellan 0 och 1 (`easeProgress` i `src/map.tsx`), med ett nytt domäntest.
+- **Testet `safety`:** sökvägen till `dist/web/index.html` blev fel i Windows (`file:///C:/C:/…`).
+- `npm test` är nu helt grönt i Windows: 33 domäntester och tio Playwright-flöden.
+
 ## Typkontrollen grön (7 oktober 2026)
 
 **Rättat, inget ändrat beteende**
