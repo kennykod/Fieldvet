@@ -40,4 +40,4 @@ Som samordnare: klicka **Importera** och dra in en Excel- eller CSV-fil (en bokn
 ## Arbeta vidare med Claude Code
 
 Läs `docs/MASTERPROMPT.md`. Den beskriver hur prototypen granskas och förbättras.
-`docs/FieldVet_pitch.pdf` visar berättelsen demon ska stödja. `docs/FieldVet_Onboarding.pdf` är en kom-igång-guide för samordnare och veterinärer.
+`docs/FieldVet_pitch.pdf` visar berättelsen demon ska stödja. `docs/FieldVet_Onboarding.pdf` är en kom-igång-guide för samordnare och veterinärer. `docs/DEMO-MANUS.md` är manuset för pitchen: 10–15 minuter, en kortversion på 3 minuter, frågor till kunden och svar på vanliga invändningar.
