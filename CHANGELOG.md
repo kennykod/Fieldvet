@@ -1,5 +1,14 @@
 # Ändringslogg
 
+## Typkontrollen grön (7 oktober 2026)
+
+**Rättat, inget ändrat beteende**
+- `npm run typecheck` ger 0 fel (tidigare 16). Den nyare TypeScript-versionen (5.9) var striktare.
+- `src/lib/xlsx.ts`: tydligare typ för binärdata till `Blob`. Byggd kod är identisk.
+- `src/ui.tsx`: statusstegens etikett kontrollerar `avbokad` först, så att TypeScript förstår indexet. Samma logik.
+- Tester: `@types/node` tillagt som utvecklingspaket, dubbel import borttagen i `tests/domain.test.ts`.
+- `tests/flows.ts` (felsökningsskript) packar upp `{ ok, world }` från planändringar och kraschar inte längre. Oanvända importer borttagna i `tests/print.ts`.
+
 ## Inramad karta, rättad rapport och färgdemo (4 oktober 2026)
 
 **Rättat**
