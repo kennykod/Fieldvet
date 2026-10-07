@@ -1,0 +1,65 @@
+# --- Hemligheter & miljövariabler ---
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+*.jks
+secrets.*
+credentials.json
+service-account*.json
+.npmrc
+.pypirc
+
+# --- Beroenden ---
+node_modules/
+bower_components/
+jspm_packages/
+vendor/
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pnp
+.pnp.js
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+
+# --- Bygg- och cachefiler ---
+dist/
+build/
+out/
+.next/
+.nuxt/
+.svelte-kit/
+.vercel/
+.turbo/
+.cache/
+.parcel-cache/
+coverage/
+*.tsbuildinfo
+
+# --- Loggar ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --- OS & editorer ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# --- Claude Code lokala inställningar ---
+.claude/settings.local.json
