@@ -101,7 +101,7 @@ await step('static-site-phone', async () => {
   const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   const p = await ctx.newPage();
   p.on('pageerror', (e) => errs.push('PAGEERROR ' + e.message)); p.on('console', (m) => m.type() === 'error' && errs.push('CONSOLE ' + m.text()));
-  await p.goto(pathToFileURL(new URL('../dist/web/index.html', import.meta.url).pathname).href); await p.waitForTimeout(800);
+  await p.goto(new URL('../dist/web/index.html', import.meta.url).href); await p.waitForTimeout(800);
   expect(await p.title() === 'FieldVet – demo', 'site title');
   expect(await p.getByRole('button', { name: 'Starta som veterinär' }).count() === 1, 'phone intro offers the vet app');
   await p.screenshot({ path: `${OUT}/intro-phone.png` });
