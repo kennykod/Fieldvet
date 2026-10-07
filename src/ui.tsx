@@ -178,7 +178,7 @@ export function StatusSteps({ status, times }: { status: Visit['status']; times:
   const idx = ({ planerad: 0, påväg: 1, framme: 2, pågår: 3, klar: 4, avbokad: -1 } as const)[status];
   const fmt = (m?: number) => (m == null ? '' : `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`);
   return (
-    <ol className="status-steps" aria-label={`Status: ${idx >= 0 ? VISIT_STEPS[idx] : 'Avbokad'}`}>
+    <ol className="status-steps" aria-label={`Status: ${idx === -1 ? 'Avbokad' : VISIT_STEPS[idx]}`}>
       {VISIT_STEPS.map((label, i) => (
         <li key={label} className={i < idx ? 'done' : i === idx ? 'now' : ''}>
           <i aria-hidden="true" />
