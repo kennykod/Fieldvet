@@ -96,7 +96,10 @@ await step('reassign', async () => {
 });
 
 await step('undo', async () => {
+  // Wait past Provet's delivery answer (~0.7 s): it updates message status and must not block undo.
+  await p.waitForTimeout(2500);
   await p.locator('.toast-act', { hasText: 'Ångra' }).click(); await p.waitForTimeout(400);
+  expect(!/går inte att ångra/.test(await p.locator('.toasts').innerText()), 'undo still works after the owner was informed');
   expect((await D.locator('.side').innerText()).includes('Milo riskerar'), 'undo restores the previous plan');
   await D.locator('.alert', { hasText: 'Milo' }).first().getByRole('button').click(); await p.waitForTimeout(500);
   await D.locator('.panel-foot').getByRole('button', { name: 'Godkänn', exact: true }).click(); await p.waitForTimeout(500);

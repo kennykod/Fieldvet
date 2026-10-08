@@ -417,6 +417,10 @@ function withAutoEta(st: AppState): AppState {
   return next;
 }
 
+/** Delivery bookkeeping (Provet's answers, the audit) moves on by itself and is carried through undo, so it must not block it. */
+const UNDO_CARRIED = new Set<keyof AppState>(['audit', 'comms', 'eta', 'commDupes']);
+const changedSince = (a: AppState, b: AppState) => (Object.keys(b) as (keyof AppState)[]).some((k) => !UNDO_CARRIED.has(k) && a[k] !== b[k]);
+
 export function AppProvider({ children, initialRole }: { children: ReactNode; initialRole: Role }) {
   const [s, setS] = useState<AppState>(initialState);
   const ref = useRef(s);
@@ -691,7 +695,7 @@ export function AppProvider({ children, initialRole }: { children: ReactNode; in
       undo: () => {
         const u = undoRef.current;
         undoRef.current = null;
-        if (!u || ref.current !== u.after) { toast('Det går inte att ångra längre, planen har ändrats sedan dess.', 'warn'); return false; }
+        if (!u || changedSince(u.after, ref.current)) { toast('Det går inte att ångra längre, planen har ändrats sedan dess.', 'warn'); return false; }
         // Messages Provet already sent stay sent: the ledger and what the owner was told are kept.
         commit(log({ ...u.before, audit: ref.current.audit, comms: ref.current.comms, eta: ref.current.eta, commDupes: ref.current.commDupes }, `Ångrade: ${u.label}`));
         toast(`Ångrat: ${u.label}. Planen är som innan.`, 'info');

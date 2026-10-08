@@ -13,7 +13,8 @@ Kör själv: `$env:BROWSER='webkit'; node tests/ops.e2e.mjs` (PowerShell). Utan 
 | WebKit (Safari-motorn) | ⚠️ 8 av 10 stabilt. `ops` faller alltid (P1 nedan). `import` faller ibland (P2 nedan). |
 | Firefox | ❓ Kunde inte startas på den här datorn (se Miljö). Inte testad. |
 
-### P1 · "Ångra" efter en flytt fungerar bara i ungefär en halv sekund
+### ✅ Rättat 8 oktober: P1 · "Ångra" efter en flytt fungerar bara i ungefär en halv sekund
+- **Rättning:** `undo` jämför nu bara det som påverkar planen (`changedSince` i `src/store.tsx`). `tests/ops.e2e.mjs` väntar 2,5 s före Ångra och faller utan rättningen. Grönt i Chromium. Inte omtestat i WebKit än.
 - **Gäller alla webbläsare**, inte bara Safari. Syns i Chrome om man väntar 2–3 sekunder innan man trycker Ångra.
 - **Så upprepar du:** Demo → Annas besök drar över 25 min → öppna Milos risk → Visa andra alternativ → Erik → Bekräfta flytt till Erik → vänta 3 sekunder → Ångra.
   Då står det "Det går inte att ångra längre, planen har ändrats sedan dess", fast inget i planen har ändrats.

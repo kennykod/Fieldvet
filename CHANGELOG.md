@@ -1,5 +1,11 @@
 # Ändringslogg
 
+## Ångra fungerar även efter några sekunder (8 oktober 2026)
+
+**Rättat**
+- **Ångra:** efter en flytt nekades Ångra så fort Provet svarat att ägaren fått ny tid (efter ungefär en halv sekund). Nu spärrar bara ändringar i själva planen Ångra, inte meddelandestatus eller logg (`src/store.tsx`).
+- **Testet `ops`:** väntar nu 2,5 sekunder innan Ångra trycks, så att felet inte kan komma tillbaka obemärkt.
+
 ## Kartan hackar inte längre, alla tester gröna (7 oktober 2026)
 
 **Rättat**
